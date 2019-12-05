@@ -25,20 +25,29 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Component;
+import javax.swing.Box;
+import javax.swing.JSeparator;
 
 public class InicialView extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textFieldPotenciaDoAparelho;
 	private JTextField textFieldAntenuacaoConector;
-	private JTextField textFieldNumeroConectores;
+	private JTextField textFieldFrequencia;
 	private JTextField textFieldAtenuacaoCabo;
 	private JTextField textFieldAlturaTorre1;
 	private JTextField textFieldGanhoAntena1;
 	private JTextField textFieldAlturaTorre2;
 	private JTextField textFieldGanhoAntena2;
 	private JTextField txtSelecioneUmaBase;
-
+	private JTextField textFieldSensibilidade;
+	private JTextField textFieldPeirp;
+	private JTextField textFieldLOS;
+	private JTextField textFieldPtx;
+	private JTextField textFieldPrx;
+	private JTextField textFieldMargem;
+	private InicialController InicialController = new InicialController();
 	/**
 	 * Launch the application.
 	 */
@@ -60,7 +69,7 @@ public class InicialView extends JFrame {
 	 */
 	public InicialView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 350);
+		setBounds(100, 100, 600, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -74,9 +83,9 @@ public class InicialView extends JFrame {
 		lblAtenuaoDosConectorres.setBounds(10, 95, 167, 14);
 		contentPane.add(lblAtenuaoDosConectorres);
 		
-		JLabel lblNmeroDeConectores = new JLabel("N\u00FAmero de conectores:");
-		lblNmeroDeConectores.setBounds(10, 120, 155, 14);
-		contentPane.add(lblNmeroDeConectores);
+		JLabel lblFrequencia = new JLabel("Frequ\u00EAncia [Mhz] :");
+		lblFrequencia.setBounds(10, 120, 155, 14);
+		contentPane.add(lblFrequencia);
 		
 		JLabel lblAtenuaoDoCabo = new JLabel("Atenua\u00E7\u00E3o do cabo [dB/m] : ");
 		lblAtenuaoDoCabo.setBounds(10, 145, 167, 14);
@@ -86,16 +95,16 @@ public class InicialView extends JFrame {
 		lblAlturaDaTorre.setBounds(317, 70, 155, 14);
 		contentPane.add(lblAlturaDaTorre);
 		
-		JLabel lblGanhoDaAntena = new JLabel("Ganho da antena 1 [dB] :");
+		JLabel lblGanhoDaAntena = new JLabel("Ganho da antena 1 [dBi] :");
 		lblGanhoDaAntena.setBounds(317, 97, 155, 14);
 		contentPane.add(lblGanhoDaAntena);
 		
 		JLabel lblAlturaDaTorre_1 = new JLabel("Altura da torre 2 [m] :");
-		lblAlturaDaTorre_1.setBounds(317, 170, 155, 14);
+		lblAlturaDaTorre_1.setBounds(317, 123, 155, 14);
 		contentPane.add(lblAlturaDaTorre_1);
 		
-		JLabel lblGanhoDaAntena_1 = new JLabel("Ganho da antena 2 [dB] :");
-		lblGanhoDaAntena_1.setBounds(317, 195, 155, 14);
+		JLabel lblGanhoDaAntena_1 = new JLabel("Ganho da antena 2 [dBi] :");
+		lblGanhoDaAntena_1.setBounds(317, 148, 155, 14);
 		contentPane.add(lblGanhoDaAntena_1);
 		
 		textFieldPotenciaDoAparelho = new JTextField();
@@ -111,10 +120,10 @@ public class InicialView extends JFrame {
 		contentPane.add(textFieldAntenuacaoConector);
 		textFieldAntenuacaoConector.setColumns(10);
 		
-		textFieldNumeroConectores = new JTextField();
-		textFieldNumeroConectores.setBounds(175, 117, 86, 20);
-		contentPane.add(textFieldNumeroConectores);
-		textFieldNumeroConectores.setColumns(10);
+		textFieldFrequencia = new JTextField();
+		textFieldFrequencia.setBounds(175, 117, 86, 20);
+		contentPane.add(textFieldFrequencia);
+		textFieldFrequencia.setColumns(10);
 		
 		textFieldAtenuacaoCabo = new JTextField();
 		textFieldAtenuacaoCabo.setBounds(175, 142, 86, 20);
@@ -132,18 +141,18 @@ public class InicialView extends JFrame {
 		textFieldGanhoAntena1.setColumns(10);
 		
 		textFieldAlturaTorre2 = new JTextField();
-		textFieldAlturaTorre2.setBounds(482, 167, 86, 20);
+		textFieldAlturaTorre2.setBounds(482, 120, 86, 20);
 		contentPane.add(textFieldAlturaTorre2);
 		textFieldAlturaTorre2.setColumns(10);
 		
 		textFieldGanhoAntena2 = new JTextField();
-		textFieldGanhoAntena2.setBounds(482, 192, 86, 20);
+		textFieldGanhoAntena2.setBounds(482, 145, 86, 20);
 		contentPane.add(textFieldGanhoAntena2);
 		textFieldGanhoAntena2.setColumns(10);
 		
 		JLabel lblVerifiqueOsDados = new JLabel("");
 		lblVerifiqueOsDados.setForeground(Color.RED);
-		lblVerifiqueOsDados.setBounds(242, 286, 111, 14);
+		lblVerifiqueOsDados.setBounds(228, 228, 111, 14);
 		contentPane.add(lblVerifiqueOsDados);
 
 		
@@ -164,12 +173,12 @@ public class InicialView extends JFrame {
 			}
 		});
 		
-		btnAbrir.setBounds(502, 11, 66, 23);
+		btnAbrir.setBounds(482, 11, 86, 23);
 		contentPane.add(btnAbrir);
 		
 		txtSelecioneUmaBase = new JTextField();
 		//txtSelecioneUmaBase.setText("Selecione uma base de dados");
-		txtSelecioneUmaBase.setBounds(131, 12, 359, 20);
+		txtSelecioneUmaBase.setBounds(107, 12, 365, 20);
 		contentPane.add(txtSelecioneUmaBase);
 		txtSelecioneUmaBase.setColumns(10);
 		
@@ -177,35 +186,105 @@ public class InicialView extends JFrame {
 		lblBaseDeDados.setBounds(10, 15, 111, 14);
 		contentPane.add(lblBaseDeDados);
 		
+		
+		JLabel lblSensibilidadeMnimadb = new JLabel("Sensibilidade m\u00EDnima [dB] :");
+		lblSensibilidadeMnimadb.setBounds(10, 170, 155, 14);
+		contentPane.add(lblSensibilidadeMnimadb);
+		
+		textFieldSensibilidade = new JTextField();
+		textFieldSensibilidade.setBounds(175, 167, 86, 20);
+		contentPane.add(textFieldSensibilidade);
+		textFieldSensibilidade.setColumns(10);
+		
+		JLabel lblPeirpdbm = new JLabel("Peirp [dBm] :");
+		lblPeirpdbm.setBounds(10, 303, 111, 14);
+		contentPane.add(lblPeirpdbm);
+		
+		JLabel lblApresentaLineOf = new JLabel("Apresenta Line of Sight:");
+		lblApresentaLineOf.setBounds(343, 276, 144, 14);
+		contentPane.add(lblApresentaLineOf);
+		
+		JLabel lblPtxdbm = new JLabel("Ptx[dBm] :");
+		lblPtxdbm.setBounds(10, 276, 66, 14);
+		contentPane.add(lblPtxdbm);
+		
+		JLabel lblPrxdbm = new JLabel("Prx[dBm] :");
+		lblPrxdbm.setBounds(10, 331, 66, 14);
+		contentPane.add(lblPrxdbm);
+		
+		JLabel lblMargemdb = new JLabel("Margem [dB] :");
+		lblMargemdb.setBounds(343, 303, 86, 14);
+		contentPane.add(lblMargemdb);
+		
+		textFieldPeirp = new JTextField();
+		textFieldPeirp.setEditable(false);
+		textFieldPeirp.setBounds(86, 300, 144, 20);
+		contentPane.add(textFieldPeirp);
+		textFieldPeirp.setColumns(10);
+		
+		textFieldLOS = new JTextField();
+		textFieldLOS.setText("Sim");
+		textFieldLOS.setEditable(false);
+		textFieldLOS.setBounds(519, 273, 49, 20);
+		contentPane.add(textFieldLOS);
+		textFieldLOS.setColumns(10);
+		
+		textFieldPtx = new JTextField();
+		textFieldPtx.setEditable(false);
+		textFieldPtx.setBounds(86, 272, 144, 20);
+		contentPane.add(textFieldPtx);
+		textFieldPtx.setColumns(10);
+		
+		textFieldPrx = new JTextField();
+		textFieldPrx.setEditable(false);
+		textFieldPrx.setBounds(86, 328, 144, 20);
+		contentPane.add(textFieldPrx);
+		textFieldPrx.setColumns(10);
+		
+		textFieldMargem = new JTextField();
+		textFieldMargem.setEditable(false);
+		textFieldMargem.setBounds(424, 300, 144, 20);
+		contentPane.add(textFieldMargem);
+		textFieldMargem.setColumns(10);
+		
+		JButton btnGrfico = new JButton("Gr\u00E1fico");
+		btnGrfico.setBounds(482, 327, 86, 23);
+		contentPane.add(btnGrfico);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(10, 253, 558, 2);
+		contentPane.add(separator);
+		
 		JButton btnCalcular = new JButton("Calcular");
 		btnCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					
 				
-				boolean frame = InicialController.setDados(
+				InicialController.setDados(//(String endereco, Float potencia, Float aConector, int frequencia, Float aCabo, Float hTorre1, Float gAntena1, Float hTorre2, Float gTorre2)
 						txtSelecioneUmaBase.getText(), 
-						Float.valueOf(textFieldPotenciaDoAparelho.getText()), 
-						Float.valueOf(textFieldAntenuacaoConector.getText()),
-						Integer.valueOf(textFieldNumeroConectores.getText()),
-						Float.valueOf(textFieldAtenuacaoCabo.getText()),
-						Float.valueOf(textFieldAlturaTorre1.getText()),
-						Float.valueOf(textFieldGanhoAntena1.getText()),
-						Float.valueOf(textFieldAlturaTorre2.getText()),
-						Float.valueOf(textFieldGanhoAntena2.getText())
-						
-						); //(String endereco, Float potencia, Float aConector, int numConector, Float aCabo, Float hTorre1, Float gAntena1, Float hTorre2, Float gTorre2)
-				lblVerifiqueOsDados.setText("Dados verificados!");
+						Double.valueOf(textFieldPotenciaDoAparelho.getText()), 
+						Double.valueOf(textFieldAntenuacaoConector.getText()),
+						Integer.valueOf(textFieldFrequencia.getText()),
+						Double.valueOf(textFieldAtenuacaoCabo.getText()),
+						Double.valueOf(textFieldAlturaTorre1.getText()),
+						Double.valueOf(textFieldGanhoAntena1.getText()),
+						Double.valueOf(textFieldAlturaTorre2.getText()),
+						Double.valueOf(textFieldGanhoAntena2.getText()),
+						Double.valueOf(textFieldSensibilidade.getText())
+						); 
+				lblVerifiqueOsDados.setText("");
+				textFieldPtx.setText(String.valueOf(InicialController.calcPtx()));
+				textFieldPeirp.setText(String.valueOf(InicialController.calcPeirp()));
+				textFieldPrx.setText(String.valueOf(InicialController.calcPrx()));
+				textFieldMargem.setText(String.valueOf(InicialController.calcMargem()));
 				} catch (Exception e1) {
 					lblVerifiqueOsDados.setText("Verifique os dados!");
 				}
 			}
 		});
-		btnCalcular.setBounds(251, 252, 89, 23);
+		btnCalcular.setBounds(242, 201, 89, 23);
 		contentPane.add(btnCalcular);
-		
-
-		
 	
 		
 		
