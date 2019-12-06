@@ -248,6 +248,14 @@ public class InicialView extends JFrame {
 		textFieldMargem.setColumns(10);
 		
 		JButton btnGrfico = new JButton("Gr\u00E1fico");
+		btnGrfico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				InicialController.geraGrafico();
+				
+				
+				
+			}
+		});
 		btnGrfico.setBounds(482, 327, 86, 23);
 		contentPane.add(btnGrfico);
 		
