@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import javax.swing.SwingConstants;
 import javax.swing.JMenuBar;
@@ -254,6 +255,7 @@ public class InicialView extends JFrame {
 				
 				
 				
+				
 			}
 		});
 		btnGrfico.setBounds(482, 327, 86, 23);
@@ -286,6 +288,7 @@ public class InicialView extends JFrame {
 				textFieldPeirp.setText(String.valueOf(InicialController.calcPeirp()));
 				textFieldPrx.setText(String.valueOf(InicialController.calcPrx()));
 				textFieldMargem.setText(String.valueOf(InicialController.calcMargem()));
+				System.out.print("FIM");
 				} catch (Exception e1) {
 					lblVerifiqueOsDados.setText("Verifique os dados!");
 				}
