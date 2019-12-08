@@ -44,7 +44,7 @@ public class InicialController {
 	
 	public Double calcHipotenusa() {
 
-		Double hip = Math.hypot(dados.get(dados.size()-1).distancia, ((dados.get(0).hRelevo + hTorre1) - (dados.get(dados.size()-1).hRelevo + hTorre2)));	
+		Double hip = Math.hypot(dados.get(dados.size()-1).distancia, (((dados.get(0).hRelevo + hTorre1) - (dados.get(dados.size()-1).hRelevo + hTorre2))/1000));	
 		return hip;
 	}
 
@@ -72,7 +72,7 @@ public class InicialController {
 		return atenLivre;
 	}
 	
-	public Double atenuacaoObstrucao() {
+	public Double gObstrucao() {
 				float colisao = 0;
 				int flag = 0;
 				Float[] e = {(float) 0.0,(float) 0.0,(float) 0.0,(float) 0.0,(float) 0.0};
@@ -96,30 +96,31 @@ public class InicialController {
 					return 0.0;
 				}
 				
-				double h = (double) (e[1] -  (e[2]));
+				double h = (double) ((e[2]) - e[1]);
+				
 				double d1 = (double) e[0];
 				this.percentualobstruido = Math.abs(((e[1] - (e[2]-e[4]) )/(2*e[4])));
 				double d2 = (double)(dados.get(dados.size()-1).distancia-e[0]);
 				double lamb = (double) comprimentoOnda();	
 				double a = ((2*(d1 + d2))/(lamb*(d1*d2)));
-				double v = (h*Math.sqrt(a));
-				
-				if(v <= -1) {
+				double v =  (h*Math.sqrt(a));
+				//System.out.println(v);
+				if(v < -1) {
 					return 0.0;
-				} else if(v <= 0) {
-					Double aObstr = (20*Math.log10(0.5-(0.62*v)));
+				} else if(v <  0.0) {
+					Double aObstr = (20*Math.log10(0.5-(0.62*v))-30);
 					return aObstr;
 					
-				} else if(v <= 1) {
-					Double aObstr = (20*Math.log10(0.5*(Math.exp(-0.95*v))));
+				} else if(v < 1) {
+					Double aObstr = (20*Math.log10(0.5*(Math.exp(-0.95*v)))-30);
 					return aObstr;					
 					
-				} else if(v <= 2.4) {
-					Double aObstr = (20*Math.log10(0.4-(Math.sqrt( 0.1184 - (Math.pow((0.38-(0.1*v)),2) )))));
+				} else if(v < 2.4) {
+					Double aObstr = (20*Math.log10(0.4-(Math.sqrt( 0.1184 - (Math.pow((0.38-(0.1*v)),2) ))))-30);
 					return aObstr;
 					
 				} else {
-					Double aObstr = (20*Math.log10((0.225/v)));
+					Double aObstr = (20*Math.log10((0.225/v))-30);
 					return aObstr;					
 					
 				}
@@ -130,7 +131,7 @@ public class InicialController {
 	public Double calcPrx() {
 		obtemRelevo();
 		
-		return calcPeirp()+gAntena1+gAntena2-calcaCaboTotal2()-atenuacaoLivre()-atenuacaoObstrucao();
+		return calcPeirp()+gAntena1+gAntena2-calcaCaboTotal2()-atenuacaoLivre()+gObstrucao();
 	}
 	
 	public Double calcMargem() {
@@ -199,7 +200,7 @@ public class InicialController {
 		float d2 = distanciafinal - d1;
 		float raio1 = ((d1*d2)/(this.frequencia*distanciafinal));
 		float raio = 547 * (float) Math.sqrt(raio1);	
-		raio = (float) (raio*(((dados.get(0).hRelevo + hTorre1) - (dados.get(dados.size()-1).hRelevo + hTorre2))/calcHipotenusa())); // raio ajustado a declinio
+		raio = (float) (raio*(((dados.get(0).hRelevo + hTorre1) - (dados.get(dados.size()-1).hRelevo + hTorre2))/(1000*calcHipotenusa()))); // raio ajustado a declinio
 		
 		return (Math.abs(raio));
 	}

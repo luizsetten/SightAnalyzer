@@ -205,7 +205,7 @@ public class InicialView extends JFrame {
 		contentPane.add(lblPrxdbm);
 		
 		JLabel lblMargemdb = new JLabel("Margem [dBm] :");
-		lblMargemdb.setBounds(343, 303, 86, 14);
+		lblMargemdb.setBounds(343, 303, 94, 14);
 		contentPane.add(lblMargemdb);
 		
 		textFieldPeirp = new JTextField();
@@ -235,7 +235,7 @@ public class InicialView extends JFrame {
 		
 		textFieldMargem = new JTextField();
 		textFieldMargem.setEditable(false);
-		textFieldMargem.setBounds(424, 300, 144, 20);
+		textFieldMargem.setBounds(437, 300, 131, 20);
 		contentPane.add(textFieldMargem);
 		textFieldMargem.setColumns(10);
 		
