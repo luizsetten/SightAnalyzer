@@ -200,8 +200,11 @@ public class InicialController {
 		float d2 = distanciafinal - d1;
 		float raio1 = ((d1*d2)/(this.frequencia*distanciafinal));
 		float raio = 547 * (float) Math.sqrt(raio1);	
-		raio = (float) (raio*(((dados.get(0).hRelevo + hTorre1) - (dados.get(dados.size()-1).hRelevo + hTorre2))/(1000*calcHipotenusa()))); // raio ajustado a declinio
+		//System.out.println(raio);
+		//raio = (float) (raio*(((dados.get(0).hRelevo + hTorre1) - (dados.get(dados.size()-1).hRelevo + hTorre2))/(1000*calcHipotenusa()))); // raio ajustado a declinio
 		
+		raio = (float) (raio * (distanciafinal/(calcHipotenusa())));
+		//System.out.println(raio);
 		return (Math.abs(raio));
 	}
 
