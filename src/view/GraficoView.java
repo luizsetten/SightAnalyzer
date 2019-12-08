@@ -24,7 +24,6 @@ public class GraficoView extends JFrame {
 	    	         createDataset(dados),
 	    	         PlotOrientation.VERTICAL,
 	    	         true,true,false);
-	    	         
 	    	      ChartPanel chartPanel = new ChartPanel( lineChart );
 	    	      chartPanel.setPreferredSize( new java.awt.Dimension( 960 , 540) );
 	    	      setContentPane( chartPanel );
@@ -37,12 +36,10 @@ public class GraficoView extends JFrame {
 	    	    	  String dist = String.valueOf(insere[0]);
 	    	    	  
 	    	    	  dataset.addValue( insere[1] , "Relevo" ,  dist);
-	    	    	  //System.out.print(dist);
 	    	    	  dataset.addValue( insere[2]  , "Line Of Sight" , dist );
 	    	    	  dataset.addValue( insere[3] , "Zona de Fresnel(superior)" , dist );
 	    	    	  dataset.addValue( insere[4] , "Zona de Fresnel(inferior)" , dist );
 	    	      }
-	    	      
 	    	      
 	    	      return dataset;
 	    	   }		

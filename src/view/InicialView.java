@@ -49,9 +49,7 @@ public class InicialView extends JFrame {
 	private JTextField textFieldPrx;
 	private JTextField textFieldMargem;
 	private InicialController InicialController = new InicialController();
-	/**
-	 * Launch the application.
-	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -65,9 +63,6 @@ public class InicialView extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public InicialView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 400);
@@ -75,6 +70,7 @@ public class InicialView extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo( null );
 		
 		JLabel lblPotnciaDoAparelho = new JLabel("Pot\u00EAncia do aparelho [W] :");
 		lblPotnciaDoAparelho.setBounds(10, 70, 167, 14);
@@ -110,24 +106,22 @@ public class InicialView extends JFrame {
 		
 		textFieldPotenciaDoAparelho = new JTextField();
 		
-		textFieldPotenciaDoAparelho.setBounds(175, 67, 86, 20);
+		textFieldPotenciaDoAparelho.setBounds(187, 67, 86, 20);
 		contentPane.add(textFieldPotenciaDoAparelho);
 		textFieldPotenciaDoAparelho.setColumns(10);
 		
-		
-		
 		textFieldAntenuacaoConector = new JTextField();
-		textFieldAntenuacaoConector.setBounds(175, 92, 86, 20);
+		textFieldAntenuacaoConector.setBounds(187, 92, 86, 20);
 		contentPane.add(textFieldAntenuacaoConector);
 		textFieldAntenuacaoConector.setColumns(10);
 		
 		textFieldFrequencia = new JTextField();
-		textFieldFrequencia.setBounds(175, 117, 86, 20);
+		textFieldFrequencia.setBounds(187, 117, 86, 20);
 		contentPane.add(textFieldFrequencia);
 		textFieldFrequencia.setColumns(10);
 		
 		textFieldAtenuacaoCabo = new JTextField();
-		textFieldAtenuacaoCabo.setBounds(175, 142, 86, 20);
+		textFieldAtenuacaoCabo.setBounds(187, 142, 86, 20);
 		contentPane.add(textFieldAtenuacaoCabo);
 		textFieldAtenuacaoCabo.setColumns(10);
 		
@@ -156,8 +150,6 @@ public class InicialView extends JFrame {
 		lblVerifiqueOsDados.setBounds(228, 228, 111, 14);
 		contentPane.add(lblVerifiqueOsDados);
 
-		
-		
 		JButton btnAbrir = new JButton("Abrir");
 		btnAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
@@ -178,7 +170,6 @@ public class InicialView extends JFrame {
 		contentPane.add(btnAbrir);
 		
 		txtSelecioneUmaBase = new JTextField();
-		//txtSelecioneUmaBase.setText("Selecione uma base de dados");
 		txtSelecioneUmaBase.setBounds(107, 12, 365, 20);
 		contentPane.add(txtSelecioneUmaBase);
 		txtSelecioneUmaBase.setColumns(10);
@@ -188,12 +179,12 @@ public class InicialView extends JFrame {
 		contentPane.add(lblBaseDeDados);
 		
 		
-		JLabel lblSensibilidadeMnimadb = new JLabel("Sensibilidade m\u00EDnima [dB] :");
-		lblSensibilidadeMnimadb.setBounds(10, 170, 155, 14);
+		JLabel lblSensibilidadeMnimadb = new JLabel("Sensibilidade m\u00EDnima [dBm] :");
+		lblSensibilidadeMnimadb.setBounds(10, 170, 167, 14);
 		contentPane.add(lblSensibilidadeMnimadb);
 		
 		textFieldSensibilidade = new JTextField();
-		textFieldSensibilidade.setBounds(175, 167, 86, 20);
+		textFieldSensibilidade.setBounds(187, 167, 86, 20);
 		contentPane.add(textFieldSensibilidade);
 		textFieldSensibilidade.setColumns(10);
 		
@@ -213,7 +204,7 @@ public class InicialView extends JFrame {
 		lblPrxdbm.setBounds(10, 331, 66, 14);
 		contentPane.add(lblPrxdbm);
 		
-		JLabel lblMargemdb = new JLabel("Margem [dB] :");
+		JLabel lblMargemdb = new JLabel("Margem [dBm] :");
 		lblMargemdb.setBounds(343, 303, 86, 14);
 		contentPane.add(lblMargemdb);
 		
@@ -224,7 +215,7 @@ public class InicialView extends JFrame {
 		textFieldPeirp.setColumns(10);
 		
 		textFieldLOS = new JTextField();
-		textFieldLOS.setText("Sim");
+		textFieldLOS.setText("");
 		textFieldLOS.setEditable(false);
 		textFieldLOS.setBounds(519, 273, 49, 20);
 		contentPane.add(textFieldLOS);
@@ -251,11 +242,7 @@ public class InicialView extends JFrame {
 		JButton btnGrfico = new JButton("Gr\u00E1fico");
 		btnGrfico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InicialController.geraGrafico();
-				
-				
-				
-				
+				InicialController.geraGrafico();	
 			}
 		});
 		btnGrfico.setBounds(482, 327, 86, 23);
@@ -268,9 +255,7 @@ public class InicialView extends JFrame {
 		JButton btnCalcular = new JButton("Calcular");
 		btnCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					
-				
+				try {	
 				InicialController.setDados(//(String endereco, Float potencia, Float aConector, int frequencia, Float aCabo, Float hTorre1, Float gAntena1, Float hTorre2, Float gTorre2)
 						txtSelecioneUmaBase.getText(), 
 						Double.valueOf(textFieldPotenciaDoAparelho.getText()), 
@@ -288,7 +273,11 @@ public class InicialView extends JFrame {
 				textFieldPeirp.setText(String.valueOf(InicialController.calcPeirp()));
 				textFieldPrx.setText(String.valueOf(InicialController.calcPrx()));
 				textFieldMargem.setText(String.valueOf(InicialController.calcMargem()));
-				System.out.print("FIM");
+				if(InicialController.getPercentual() < 0.4) {
+					textFieldLOS.setText("Sim");
+				} else {
+					textFieldLOS.setText("Não");
+				}
 				} catch (Exception e1) {
 					lblVerifiqueOsDados.setText("Verifique os dados!");
 				}

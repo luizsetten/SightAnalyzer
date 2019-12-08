@@ -17,6 +17,7 @@ public class InicialController {
 	private Double hTorre1, gAntena1, hTorre2, gAntena2, sensibilidade;
 	private int frequencia;
 	
+	private float percentualobstruido;
 	private  final Exception FileException = null;
 	public ArrayList<PosicaoModel> dados = new ArrayList<PosicaoModel>(); 
 	
@@ -41,9 +42,12 @@ public class InicialController {
 		}			
 	}
 	
+	public Double calcHipotenusa() {
 
+		Double hip = Math.hypot(dados.get(dados.size()-1).distancia, ((dados.get(0).hRelevo + hTorre1) - (dados.get(dados.size()-1).hRelevo + hTorre2)));	
+		return hip;
+	}
 
-	
 	public Double calcPtx() {
 		return 10*Math.log10(potencia*1000);
 	}
@@ -62,53 +66,115 @@ public class InicialController {
 		return calcPtx()-calcaCaboTotal1();
 	}
 	
-	public Double atenuacaoLivre() throws FileNotFoundException {
-		obtemRelevo();
+	public Double atenuacaoLivre() {	
 		
-		return 6.5;
+		Double atenLivre = 32.5 +(20 * Math.log10(calcHipotenusa()))+ (20* Math.log10(frequencia));
+		return atenLivre;
 	}
 	
 	public Double atenuacaoObstrucao() {
+				float colisao = 0;
+				int flag = 0;
+				Float[] e = {(float) 0.0,(float) 0.0,(float) 0.0,(float) 0.0,(float) 0.0};
+				for(PosicaoModel p: this.dados) {
+					float raio = valorDaZona(p.distancia);
+					float los = lineOfSight(p.distancia);
+
+					if(((los-raio) - p.hRelevo) < colisao) {
+						flag = 1;
+						colisao = ((los-raio) - p.hRelevo);
+						e[0] = p.distancia; 
+						e[1] = p.hRelevo;
+						e[2] = los;						
+						e[4] = raio;
+
+					}
+				} //roda todo o grafico e encontra o pior ponto
+				
+				if(flag == 0) {
+					this.percentualobstruido = (float) 0.0;
+					return 0.0;
+				}
+				
+				double h = (double) (e[1] -  (e[2]));
+				double d1 = (double) e[0];
+				this.percentualobstruido = Math.abs(((e[1] - (e[2]-e[4]) )/(2*e[4])));
+				double d2 = (double)(dados.get(dados.size()-1).distancia-e[0]);
+				double lamb = (double) comprimentoOnda();	
+				double a = ((2*(d1 + d2))/(lamb*(d1*d2)));
+				double v = (h*Math.sqrt(a));
+				
+				if(v <= -1) {
+					return 0.0;
+				} else if(v <= 0) {
+					Double aObstr = (20*Math.log10(0.5-(0.62*v)));
+					return aObstr;
+					
+				} else if(v <= 1) {
+					Double aObstr = (20*Math.log10(0.5*(Math.exp(-0.95*v))));
+					return aObstr;					
+					
+				} else if(v <= 2.4) {
+					Double aObstr = (20*Math.log10(0.4-(Math.sqrt( 0.1184 - (Math.pow((0.38-(0.1*v)),2) )))));
+					return aObstr;
+					
+				} else {
+					Double aObstr = (20*Math.log10((0.225/v)));
+					return aObstr;					
+					
+				}
 		
-		return 10.2;
+		
 	}
 	
-	public Double calcPrx() throws FileNotFoundException {
-		//obtemRelevo();
-		return calcPeirp()-calcaCaboTotal2()-atenuacaoLivre()-atenuacaoObstrucao();
+	public Double calcPrx() {
+		obtemRelevo();
+		
+		return calcPeirp()+gAntena1+gAntena2-calcaCaboTotal2()-atenuacaoLivre()-atenuacaoObstrucao();
 	}
 	
-	public Double calcMargem() throws FileNotFoundException {
+	public Double calcMargem() {
 		
 		return calcPrx()-sensibilidade;
 	}
 	
-	public void obtemRelevo() throws FileNotFoundException {
+	public void obtemRelevo() {
 		    StringBuilder contentBuilder = new StringBuilder();
+		    
 		    try (BufferedReader br = new BufferedReader(new FileReader(endereco))){
 		        String sCurrentLine;
+		        
 		        while ((sCurrentLine = br.readLine()) != null) 
 		        {
 		            contentBuilder.append(sCurrentLine).append("\n");
 		        }
+		        
 		    } 
 		    catch (IOException e) 
 		    {
-		        e.printStackTrace();
+
 		    }
 		    StringTokenizer tk = new StringTokenizer(contentBuilder.toString());
-		    while(tk.hasMoreTokens()) {
-		    	PosicaoModel pm = new PosicaoModel();
-		    	
-		    	Float distancia = Float.valueOf(tk.nextToken(";"));
-		    	Float altura = Float.valueOf(tk.nextToken(";")); 
-		    	pm.distancia = distancia;
-		    	pm.hRelevo = altura;
-		    	dados.add(pm);
+		    try {
+		    	while(tk.hasMoreTokens()) {
+		    		PosicaoModel pm = new PosicaoModel();	
+		    		Float distancia = Float.valueOf(tk.nextToken(";"));
+		    		pm.distancia = distancia;
+		    		Float altura = Float.valueOf(tk.nextToken(";")); 
+		    		pm.hRelevo = altura;
+		    		dados.add(pm);
 		    }
+		    	} catch(Exception e1) {
+		    }
+		    
 }
+	
+	public float getPercentual() {
+		return this.percentualobstruido;
+	}
+	
 	public float comprimentoOnda() {
-		return 299792458/this.frequencia; 
+		return (299792458/this.frequencia); 
 	}
 	
 	public float lineOfSight(Float distancia) {
@@ -121,34 +187,29 @@ public class InicialController {
 		float hTorre2 = this.hTorre2.floatValue();
 		float h2 = hRelevo2 + hTorre2;
 		
-		float percurso = dados.get(dados.size()-1).distancia;
+		float percurso = dados.get(dados.size()-1).distancia; //distancia horizontal
 		float desnivel = ((h2-h1)/percurso);
 		
 		return ((desnivel*distancia)+h1);
 	}
-	
+		
 	public float valorDaZona(Float distancia) {
-		float distanciafinal = dados.get(dados.size()-1).distancia; //ultima posição ormalmente o tamanho do plano
+		float distanciafinal = dados.get(dados.size()-1).distancia; //ultima posição normalmente o tamanho do plano
 		float d1 = distancia;
 		float d2 = distanciafinal - d1;
 		float raio1 = ((d1*d2)/(this.frequencia*distanciafinal));
-		float raio = 547 * (float) Math.sqrt(raio1);
+		float raio = 547 * (float) Math.sqrt(raio1);	
+		raio = (float) (raio*(((dados.get(0).hRelevo + hTorre1) - (dados.get(dados.size()-1).hRelevo + hTorre2))/calcHipotenusa())); // raio ajustado a declinio
 		
-// cosseno --->>>>>>>    *(((lineOfSight(distanciafinal)-dados.get(0).hRelevo)/distanciafinal)/1000) 
-		return (raio );
+		return (Math.abs(raio));
 	}
-		
-		
 
-
-	
 	public void geraGrafico() {
 		ArrayList<Float[]> dados = new ArrayList<Float[]>();
 		
 		for(PosicaoModel p: this.dados) {
 			float raio = valorDaZona(p.distancia);
 			float los = lineOfSight(p.distancia);
-			//System.out.println(raio);
 			Float[] e = {(float) p.distancia,(float) p.hRelevo,(float) los,(float) los+raio,(float) los-raio};
 			dados.add(e);
 		}
