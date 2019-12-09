@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controller.InicialController;
+import model.InicialModel;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -48,20 +48,7 @@ public class InicialView extends JFrame {
 	private JTextField textFieldPtx;
 	private JTextField textFieldPrx;
 	private JTextField textFieldMargem;
-	private InicialController InicialController = new InicialController();
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InicialView frame = new InicialView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private InicialModel InicialModel = new InicialModel();
 
 	public InicialView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -242,7 +229,7 @@ public class InicialView extends JFrame {
 		JButton btnGrfico = new JButton("Gr\u00E1fico");
 		btnGrfico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InicialController.geraGrafico();	
+				InicialModel.geraGrafico();	
 			}
 		});
 		btnGrfico.setBounds(482, 327, 86, 23);
@@ -256,7 +243,7 @@ public class InicialView extends JFrame {
 		btnCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {	
-				InicialController.setDados(//(String endereco, Float potencia, Float aConector, int frequencia, Float aCabo, Float hTorre1, Float gAntena1, Float hTorre2, Float gTorre2)
+				InicialModel.setDados(//(String endereco, Float potencia, Float aConector, int frequencia, Float aCabo, Float hTorre1, Float gAntena1, Float hTorre2, Float gTorre2)
 						txtSelecioneUmaBase.getText(), 
 						Double.valueOf(textFieldPotenciaDoAparelho.getText()), 
 						Double.valueOf(textFieldAntenuacaoConector.getText()),
@@ -269,11 +256,11 @@ public class InicialView extends JFrame {
 						Double.valueOf(textFieldSensibilidade.getText())
 						); 
 				lblVerifiqueOsDados.setText("");
-				textFieldPtx.setText(String.valueOf(InicialController.calcPtx()));
-				textFieldPeirp.setText(String.valueOf(InicialController.calcPeirp()));
-				textFieldPrx.setText(String.valueOf(InicialController.calcPrx()));
-				textFieldMargem.setText(String.valueOf(InicialController.calcMargem()));
-				if(InicialController.getPercentual() < 0.4) {
+				textFieldPtx.setText(String.valueOf(InicialModel.calcPtx()));
+				textFieldPeirp.setText(String.valueOf(InicialModel.calcPeirp()));
+				textFieldPrx.setText(String.valueOf(InicialModel.calcPrx()));
+				textFieldMargem.setText(String.valueOf(InicialModel.calcMargem()));
+				if(InicialModel.getPercentual() < 0.4) {
 					textFieldLOS.setText("Sim");
 				} else {
 					textFieldLOS.setText("Não");

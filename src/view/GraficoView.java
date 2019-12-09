@@ -13,9 +13,6 @@ import javax.swing.JFrame;
 
 public class GraficoView extends JFrame {
 
-
-	 
-	
 	public GraficoView(String tituloJanela, String tituloGrafico, ArrayList<Float[]> dados) {
 		super(tituloJanela);
 	      JFreeChart lineChart = ChartFactory.createLineChart(
@@ -29,7 +26,7 @@ public class GraficoView extends JFrame {
 	    	      setContentPane( chartPanel );
 	    	   }
 
-	    	   private DefaultCategoryDataset createDataset(ArrayList<Float[]> dados ) {
+	 private DefaultCategoryDataset createDataset(ArrayList<Float[]> dados ) {
 	    	      DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
 	    	      
 	    	      for(Float[] insere: dados) {

@@ -1,4 +1,4 @@
-package controller;
+package model;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,10 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import model.PosicaoModel;
 import view.GraficoView;
 
-public class InicialController {
+public class InicialModel {
 	private String endereco;
 	private Double potencia, aConector, aCabo;
 	private Double hTorre1, gAntena1, hTorre2, gAntena2, sensibilidade;
