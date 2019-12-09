@@ -242,7 +242,9 @@ public class InicialView extends JFrame {
 		JButton btnCalcular = new JButton("Calcular");
 		btnCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				btnCalcular.setEnabled(false);
 				try {	
+									
 				InicialModel.setDados(//(String endereco, Float potencia, Float aConector, int frequencia, Float aCabo, Float hTorre1, Float gAntena1, Float hTorre2, Float gTorre2)
 						txtSelecioneUmaBase.getText(), 
 						Double.valueOf(textFieldPotenciaDoAparelho.getText()), 
@@ -262,6 +264,7 @@ public class InicialView extends JFrame {
 				textFieldMargem.setText(String.valueOf(InicialModel.calcMargem()));
 				if(InicialModel.getPercentual() < 0.4) {
 					textFieldLOS.setText("Sim");
+					
 				} else {
 					textFieldLOS.setText("Não");
 				}

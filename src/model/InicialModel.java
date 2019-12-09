@@ -16,14 +16,13 @@ public class InicialModel {
 	private Double hTorre1, gAntena1, hTorre2, gAntena2, sensibilidade;
 	private int frequencia;
 	
-	private float percentualobstruido;
+	private float percentualobstruido =0;
 	private  final Exception FileException = null;
 	public ArrayList<PosicaoModel> dados = new ArrayList<PosicaoModel>(); 
 	
 
 	public boolean setDados(String endereco, Double potencia, Double aConector, int frequencia, Double aCabo, Double hTorre1, Double gAntena1, Double hTorre2, Double gAntena2, Double sensibilidade) throws java.lang.Exception{
 		try {
-
 			this.endereco = endereco;
 			this.potencia = potencia;
 			this.aConector = aConector;
@@ -34,7 +33,7 @@ public class InicialModel {
 			this.hTorre2 = hTorre2;
 			this.gAntena2 = gAntena2;
 			this.sensibilidade = sensibilidade;
-			
+			this.percentualobstruido = 0;
 			return true;			
 		} catch(Exception e) {
 			throw FileException;		
@@ -66,7 +65,7 @@ public class InicialModel {
 	}
 	
 	public Double atenuacaoLivre() {	
-		
+		this.percentualobstruido = 0;
 		Double atenLivre = 32.5 +(20 * Math.log10(calcHipotenusa()))+ (20* Math.log10(frequencia));
 		return atenLivre;
 	}
@@ -91,7 +90,7 @@ public class InicialModel {
 				} //roda todo o grafico e encontra o pior ponto
 				
 				if(flag == 0) {
-					this.percentualobstruido = (float) 0.0;
+					
 					return 0.0;
 				}
 				
@@ -99,11 +98,17 @@ public class InicialModel {
 				
 				double d1 = (double) e[0];
 				this.percentualobstruido = Math.abs(((e[1] - (e[2]-e[4]) )/(2*e[4])));
-				double d2 = (double)(dados.get(dados.size()-1).distancia-e[0]);
+				//System.out.println(this.percentualobstruido);
+				//System.out.println("distancia: " + e[0] + " hrelevo: " + e[1]);
+				double d2 = (double)(dados.get(dados.size()-1).distancia - e[0]);
+				e[0] = (float) 0; 
+				e[1] = (float) 0;
+				e[2] = (float) 0;						
+				e[4] = (float) 0;
 				double lamb = (double) comprimentoOnda();	
 				double a = ((2*(d1 + d2))/(lamb*(d1*d2)));
 				double v =  (h*Math.sqrt(a));
-				//System.out.println(v);
+				
 				if(v < -1) {
 					return 0.0;
 				} else if(v <  0.0) {
@@ -128,6 +133,7 @@ public class InicialModel {
 	}
 	
 	public Double calcPrx() {
+		
 		obtemRelevo();
 		
 		return calcPeirp()+gAntena1+gAntena2-calcaCaboTotal2()-atenuacaoLivre()+gObstrucao();
@@ -152,7 +158,7 @@ public class InicialModel {
 		    } 
 		    catch (IOException e) 
 		    {
-
+		    	System.out.print("Erro No Arquivo");
 		    }
 		    StringTokenizer tk = new StringTokenizer(contentBuilder.toString());
 		    try {
@@ -170,6 +176,7 @@ public class InicialModel {
 }
 	
 	public float getPercentual() {
+		//gObstrucao();
 		return this.percentualobstruido;
 	}
 	
