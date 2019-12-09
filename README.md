@@ -11,3 +11,4 @@ O que precisa: 	-Documento dos requisitos
 		-Diagrama dos casos de uso
 		-Diagrama de Raia
 		-Diagrama de Atividades
+		-Diagrama de componentes
